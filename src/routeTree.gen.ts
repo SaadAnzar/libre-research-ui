@@ -8,144 +8,196 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-// Import Routes
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as MainRouteImport } from './routes/_main'
+import { Route as AuthRouteImport } from './routes/_auth'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as MainHomeRouteImport } from './routes/_main/home'
+import { Route as MainHistoryRouteImport } from './routes/_main/history'
+import { Route as AuthRegisterRouteImport } from './routes/_auth/register'
+import { Route as AuthLoginRouteImport } from './routes/_auth/login'
+import { Route as MainResearchIndexRouteImport } from './routes/_main/research.index'
+import { Route as MainResearchResearchIdRouteImport } from './routes/_main/research.$researchId'
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as MainImport } from './routes/_main'
-import { Route as AuthImport } from './routes/_auth'
-import { Route as IndexImport } from './routes/index'
-import { Route as MainHomeImport } from './routes/_main/home'
-import { Route as MainHistoryImport } from './routes/_main/history'
-import { Route as AuthRegisterImport } from './routes/_auth/register'
-import { Route as AuthLoginImport } from './routes/_auth/login'
-import { Route as MainResearchIndexImport } from './routes/_main/research.index'
-import { Route as MainResearchResearchIdImport } from './routes/_main/research.$researchId'
-
-// Create/Update Routes
-
-const MainRoute = MainImport.update({
+const MainRoute = MainRouteImport.update({
   id: '/_main',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const AuthRoute = AuthImport.update({
+const AuthRoute = AuthRouteImport.update({
   id: '/_auth',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const IndexRoute = IndexImport.update({
+const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const MainHomeRoute = MainHomeImport.update({
+const MainHomeRoute = MainHomeRouteImport.update({
   id: '/home',
   path: '/home',
   getParentRoute: () => MainRoute,
 } as any)
-
-const MainHistoryRoute = MainHistoryImport.update({
+const MainHistoryRoute = MainHistoryRouteImport.update({
   id: '/history',
   path: '/history',
   getParentRoute: () => MainRoute,
 } as any)
-
-const AuthRegisterRoute = AuthRegisterImport.update({
+const AuthRegisterRoute = AuthRegisterRouteImport.update({
   id: '/register',
   path: '/register',
   getParentRoute: () => AuthRoute,
 } as any)
-
-const AuthLoginRoute = AuthLoginImport.update({
+const AuthLoginRoute = AuthLoginRouteImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => AuthRoute,
 } as any)
-
-const MainResearchIndexRoute = MainResearchIndexImport.update({
+const MainResearchIndexRoute = MainResearchIndexRouteImport.update({
   id: '/research/',
   path: '/research/',
   getParentRoute: () => MainRoute,
 } as any)
-
-const MainResearchResearchIdRoute = MainResearchResearchIdImport.update({
+const MainResearchResearchIdRoute = MainResearchResearchIdRouteImport.update({
   id: '/research/$researchId',
   path: '/research/$researchId',
   getParentRoute: () => MainRoute,
 } as any)
 
-// Populate the FileRoutesByPath interface
+export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
+  '/login': typeof AuthLoginRoute
+  '/register': typeof AuthRegisterRoute
+  '/history': typeof MainHistoryRoute
+  '/home': typeof MainHomeRoute
+  '/research/$researchId': typeof MainResearchResearchIdRoute
+  '/research': typeof MainResearchIndexRoute
+}
+export interface FileRoutesByTo {
+  '/': typeof IndexRoute
+  '/login': typeof AuthLoginRoute
+  '/register': typeof AuthRegisterRoute
+  '/history': typeof MainHistoryRoute
+  '/home': typeof MainHomeRoute
+  '/research/$researchId': typeof MainResearchResearchIdRoute
+  '/research': typeof MainResearchIndexRoute
+}
+export interface FileRoutesById {
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/_auth': typeof AuthRouteWithChildren
+  '/_main': typeof MainRouteWithChildren
+  '/_auth/login': typeof AuthLoginRoute
+  '/_auth/register': typeof AuthRegisterRoute
+  '/_main/history': typeof MainHistoryRoute
+  '/_main/home': typeof MainHomeRoute
+  '/_main/research/$researchId': typeof MainResearchResearchIdRoute
+  '/_main/research/': typeof MainResearchIndexRoute
+}
+export interface FileRouteTypes {
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/register'
+    | '/history'
+    | '/home'
+    | '/research/$researchId'
+    | '/research'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | '/login'
+    | '/register'
+    | '/history'
+    | '/home'
+    | '/research/$researchId'
+    | '/research'
+  id:
+    | '__root__'
+    | '/'
+    | '/_auth'
+    | '/_main'
+    | '/_auth/login'
+    | '/_auth/register'
+    | '/_main/history'
+    | '/_main/home'
+    | '/_main/research/$researchId'
+    | '/_main/research/'
+  fileRoutesById: FileRoutesById
+}
+export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRouteWithChildren
+  MainRoute: typeof MainRouteWithChildren
+}
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
+    '/_main': {
+      id: '/_main'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof MainRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_auth': {
       id: '/_auth'
       path: ''
       fullPath: ''
-      preLoaderRoute: typeof AuthImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_main': {
-      id: '/_main'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof MainImport
-      parentRoute: typeof rootRoute
-    }
-    '/_auth/login': {
-      id: '/_auth/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof AuthLoginImport
-      parentRoute: typeof AuthImport
-    }
-    '/_auth/register': {
-      id: '/_auth/register'
-      path: '/register'
-      fullPath: '/register'
-      preLoaderRoute: typeof AuthRegisterImport
-      parentRoute: typeof AuthImport
-    }
-    '/_main/history': {
-      id: '/_main/history'
-      path: '/history'
-      fullPath: '/history'
-      preLoaderRoute: typeof MainHistoryImport
-      parentRoute: typeof MainImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_main/home': {
       id: '/_main/home'
       path: '/home'
       fullPath: '/home'
-      preLoaderRoute: typeof MainHomeImport
-      parentRoute: typeof MainImport
+      preLoaderRoute: typeof MainHomeRouteImport
+      parentRoute: typeof MainRoute
     }
-    '/_main/research/$researchId': {
-      id: '/_main/research/$researchId'
-      path: '/research/$researchId'
-      fullPath: '/research/$researchId'
-      preLoaderRoute: typeof MainResearchResearchIdImport
-      parentRoute: typeof MainImport
+    '/_main/history': {
+      id: '/_main/history'
+      path: '/history'
+      fullPath: '/history'
+      preLoaderRoute: typeof MainHistoryRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_auth/register': {
+      id: '/_auth/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof AuthRegisterRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/login': {
+      id: '/_auth/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof AuthLoginRouteImport
+      parentRoute: typeof AuthRoute
     }
     '/_main/research/': {
       id: '/_main/research/'
       path: '/research'
       fullPath: '/research'
-      preLoaderRoute: typeof MainResearchIndexImport
-      parentRoute: typeof MainImport
+      preLoaderRoute: typeof MainResearchIndexRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/research/$researchId': {
+      id: '/_main/research/$researchId'
+      path: '/research/$researchId'
+      fullPath: '/research/$researchId'
+      preLoaderRoute: typeof MainResearchResearchIdRouteImport
+      parentRoute: typeof MainRoute
     }
   }
 }
-
-// Create and export the route tree
 
 interface AuthRouteChildren {
   AuthLoginRoute: typeof AuthLoginRoute
@@ -175,146 +227,11 @@ const MainRouteChildren: MainRouteChildren = {
 
 const MainRouteWithChildren = MainRoute._addFileChildren(MainRouteChildren)
 
-export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '': typeof MainRouteWithChildren
-  '/login': typeof AuthLoginRoute
-  '/register': typeof AuthRegisterRoute
-  '/history': typeof MainHistoryRoute
-  '/home': typeof MainHomeRoute
-  '/research/$researchId': typeof MainResearchResearchIdRoute
-  '/research': typeof MainResearchIndexRoute
-}
-
-export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '': typeof MainRouteWithChildren
-  '/login': typeof AuthLoginRoute
-  '/register': typeof AuthRegisterRoute
-  '/history': typeof MainHistoryRoute
-  '/home': typeof MainHomeRoute
-  '/research/$researchId': typeof MainResearchResearchIdRoute
-  '/research': typeof MainResearchIndexRoute
-}
-
-export interface FileRoutesById {
-  __root__: typeof rootRoute
-  '/': typeof IndexRoute
-  '/_auth': typeof AuthRouteWithChildren
-  '/_main': typeof MainRouteWithChildren
-  '/_auth/login': typeof AuthLoginRoute
-  '/_auth/register': typeof AuthRegisterRoute
-  '/_main/history': typeof MainHistoryRoute
-  '/_main/home': typeof MainHomeRoute
-  '/_main/research/$researchId': typeof MainResearchResearchIdRoute
-  '/_main/research/': typeof MainResearchIndexRoute
-}
-
-export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | ''
-    | '/login'
-    | '/register'
-    | '/history'
-    | '/home'
-    | '/research/$researchId'
-    | '/research'
-  fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | ''
-    | '/login'
-    | '/register'
-    | '/history'
-    | '/home'
-    | '/research/$researchId'
-    | '/research'
-  id:
-    | '__root__'
-    | '/'
-    | '/_auth'
-    | '/_main'
-    | '/_auth/login'
-    | '/_auth/register'
-    | '/_main/history'
-    | '/_main/home'
-    | '/_main/research/$researchId'
-    | '/_main/research/'
-  fileRoutesById: FileRoutesById
-}
-
-export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AuthRoute: typeof AuthRouteWithChildren
-  MainRoute: typeof MainRouteWithChildren
-}
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRouteWithChildren,
   MainRoute: MainRouteWithChildren,
 }
-
-export const routeTree = rootRoute
+export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-/* ROUTE_MANIFEST_START
-{
-  "routes": {
-    "__root__": {
-      "filePath": "__root.tsx",
-      "children": [
-        "/",
-        "/_auth",
-        "/_main"
-      ]
-    },
-    "/": {
-      "filePath": "index.tsx"
-    },
-    "/_auth": {
-      "filePath": "_auth.tsx",
-      "children": [
-        "/_auth/login",
-        "/_auth/register"
-      ]
-    },
-    "/_main": {
-      "filePath": "_main.tsx",
-      "children": [
-        "/_main/history",
-        "/_main/home",
-        "/_main/research/$researchId",
-        "/_main/research/"
-      ]
-    },
-    "/_auth/login": {
-      "filePath": "_auth/login.tsx",
-      "parent": "/_auth"
-    },
-    "/_auth/register": {
-      "filePath": "_auth/register.tsx",
-      "parent": "/_auth"
-    },
-    "/_main/history": {
-      "filePath": "_main/history.tsx",
-      "parent": "/_main"
-    },
-    "/_main/home": {
-      "filePath": "_main/home.tsx",
-      "parent": "/_main"
-    },
-    "/_main/research/$researchId": {
-      "filePath": "_main/research.$researchId.tsx",
-      "parent": "/_main"
-    },
-    "/_main/research/": {
-      "filePath": "_main/research.index.tsx",
-      "parent": "/_main"
-    }
-  }
-}
-ROUTE_MANIFEST_END */
