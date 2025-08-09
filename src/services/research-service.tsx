@@ -50,7 +50,7 @@ export function useResearch() {
   const requestResearch = useMutation({
     mutationFn: async (data: ResearchRequest): Promise<ResearchResponse> => {
       try {
-        const response = await api.post("/research", data);
+        const response = await api.post("/research/", data);
         return response.data;
       } catch (error: any) {
         const statusCode = error.response?.status;
