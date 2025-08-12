@@ -1,10 +1,11 @@
 import { Loader } from "@/components/loaders";
+import { DeleteButton } from "@/components/research/delete-button";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useResearch } from "@/services/research-service";
 import { Link } from "@tanstack/react-router";
-import { ArrowRightIcon, ClockIcon, SearchIcon } from "lucide-react";
+import { ClockIcon, FileTextIcon, SearchIcon } from "lucide-react";
 
 export default function History() {
   const { useResearchHistory } = useResearch();
@@ -64,18 +65,22 @@ export default function History() {
                           )}
                         </p>
                       </div>
-                      <Link
-                        to="/research/$researchId"
-                        params={{
-                          researchId: research.id,
-                        }}
-                        className={cn(
-                          buttonVariants({ variant: "secondary" }),
-                          "rounded-xl self-end md:self-auto"
-                        )}
-                      >
-                        View Report <ArrowRightIcon />
-                      </Link>
+                      <div className="flex items-center gap-4 justify-between">
+                        <DeleteButton researchId={research.id} />
+
+                        <Link
+                          to="/research/$researchId"
+                          params={{
+                            researchId: research.id,
+                          }}
+                          className={cn(
+                            buttonVariants({ variant: "secondary" }),
+                            "rounded-xl"
+                          )}
+                        >
+                          View Report <FileTextIcon />
+                        </Link>
+                      </div>
                     </div>
                   </Card>
                 ))}

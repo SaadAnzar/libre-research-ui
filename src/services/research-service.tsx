@@ -109,8 +109,11 @@ export function useResearch() {
 
         const researchStatus = data as ResearchStatus | undefined;
 
-        if (researchStatus?.status === "in_progress") {
-          return 3000;
+        if (
+          researchStatus?.status === "in_progress" ||
+          researchStatus?.status === "processing"
+        ) {
+          return 20000;
         }
 
         return false;
@@ -135,6 +138,28 @@ export function useResearch() {
       enabled: !!researchId && completed,
       staleTime: Infinity,
     });
+
+  const deleteResearch = useMutation({
+    mutationFn: async (researchId: string) => {
+      try {
+        const response = await api.delete(`/research/${researchId}`);
+        return response.data;
+      } catch (error: any) {
+        const statusCode = error.response?.status;
+        const errorMessage =
+          error.response?.data?.detail || "Failed to delete research";
+        throw { status: statusCode, detail: errorMessage };
+      }
+    },
+    onSuccess: (_, researchId) => {
+      queryClient.invalidateQueries({
+        queryKey: ["researchReport", researchId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: researchKeys.researchHistory,
+      });
+    },
+  });
 
   const downloadPdf = useMutation({
     mutationFn: async ({
@@ -209,6 +234,7 @@ export function useResearch() {
     useResearchHistory,
     useResearchStatus,
     useResearchReport,
+    deleteResearch,
     downloadPdf,
   };
 }

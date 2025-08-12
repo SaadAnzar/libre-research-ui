@@ -1,13 +1,17 @@
 import { Loader2 } from "@/components/loaders";
+import { DeleteButton } from "@/components/research/delete-button";
 import { ResearchReport } from "@/components/research/research-report";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useResearch } from "@/services/research-service";
+import { useNavigate } from "@tanstack/react-router";
 import { DownloadCloudIcon, XCircleIcon } from "lucide-react";
 import { toast } from "sonner";
 
 export default function Research({ researchId }: { researchId: string }) {
   const { useResearchStatus, useResearchReport, downloadPdf } = useResearch();
+
+  const navigate = useNavigate();
 
   const {
     data: researchStatus,
@@ -92,7 +96,15 @@ export default function Research({ researchId }: { researchId: string }) {
             {new Date(report.created_at).toLocaleDateString()}
           </p>
         </div>
-        <div>
+        <div className="flex items-center justify-between gap-4">
+          <DeleteButton
+            researchId={researchId}
+            onClick={() => {
+              navigate({
+                to: "/history",
+              });
+            }}
+          />
           <Button
             className="bg-sky-600 hover:bg-sky-500 rounded-xl"
             onClick={handlePdfDownload}
